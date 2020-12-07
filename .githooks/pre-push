@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "Running unit tests..."
+
+# Test code before push
+flutter test .

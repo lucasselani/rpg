@@ -1,0 +1,23 @@
+#!/bin/sh
+files=`git diff --name-only --cached | grep .dart | xargs`
+if [ ! -z "$files" ]
+then 
+    # Format code using Flutter format
+    echo "Running format on added files..."
+    flutter format $files
+    git add $files
+    # Analyze code according to pedantic rules
+    echo "Running static analysis..."
+    flutter analyze
+    status=$?
+    if [ "$status" = 0 ] ; then
+        echo "Static analysis found no problems. You can push your modifications safely"
+        exit 0
+    else
+        echo 1>&2 "Static analysis found violations it could not fix. Correct the lines shown and commit again."
+        exit 1
+    fi
+else 
+    echo "No .dart files to analyze or format, git commit will continue normally..."
+    exit 0
+fi
