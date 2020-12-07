@@ -8,6 +8,6 @@ abstract class View<T extends ViewModel> extends StatelessWidget {
   View(this.viewModel, {Key key})
       : assert(viewModel != null),
         super(key: key) {
-    if (!Get.isRegistered<T>()) Get.put<T>(viewModel);
+    if (!Get.isRegistered<T>()) Get.lazyPut<T>(() => viewModel);
   }
 }
