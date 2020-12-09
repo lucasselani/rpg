@@ -5,9 +5,8 @@ import 'package:rpg/base/view/view_model.dart';
 abstract class View<T extends ViewModel> extends StatelessWidget {
   final T viewModel;
 
-  View(this.viewModel, {Key key})
+  View(T viewModel, {Key key})
       : assert(viewModel != null),
-        super(key: key) {
-    if (!Get.isRegistered<T>()) Get.lazyPut<T>(() => viewModel);
-  }
+        viewModel = Get.isRegistered<T>() ? viewModel : Get.put<T>(viewModel),
+        super(key: key);
 }
