@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:rpg/core/capabilities/move/movement.dart';
 import 'package:rpg/core/stages/base/stage.dart';
-import 'package:rpg/core/tiles/base/node.dart';
+import 'package:rpg/core/maps/base/vertex.dart';
 
 class Movable {
   int xPos = 0;
@@ -16,63 +16,65 @@ class Movable {
     yPos = movement.destiny.yPos;
   }
 
-  List<Movement> possibleMoviments(Stage stage, {int maxDistance = 0}) {
+  List<Movement> possibleMovements(Stage stage, {int maxDistance = 0}) {
     assert(stage != null && maxDistance >= 0);
-    if (maxDistance == 0) return [];
-    final currentNode = stage.map.nodeAt(x: xPos, y: yPos);
-    final initialMoviments =
-        _findInitialMoviments(source: currentNode, stage: stage);
-    return _findNextMoviments(
-            moviments: initialMoviments, stage: stage, maxDistance: maxDistance)
-        .toList();
+    if (maxDistance == 0) return List.unmodifiable([]);
+    final currentVertex = stage.map.vertexAt(x: xPos, y: yPos);
+    final initialMovements =
+        _findInitialMovements(source: currentVertex, stage: stage);
+    final allMovements = _findNextMovements(
+        movements: initialMovements, stage: stage, maxDistance: maxDistance);
+    return List.unmodifiable(allMovements);
   }
 
-  Set<Movement> _findInitialMoviments({
-    @required Node source,
+  Set<Movement> _findInitialMovements({
+    @required Vertex source,
     @required Stage stage,
   }) {
-    final initialMoviments = <Movement>{};
-    final possibleNodes = _possibleNodes(stage: stage, source: source);
-    possibleNodes.forEach((destiny) {
+    final initialMovements = <Movement>{};
+    final possibleVertexs = _possibleVertices(stage: stage, source: source);
+    possibleVertexs.forEach((destiny) {
       final movement = Movement.unit(source: source, destiny: destiny);
-      initialMoviments.add(movement);
+      initialMovements.add(movement);
     });
-    return initialMoviments;
+    return initialMovements;
   }
 
-  Set<Movement> _findNextMoviments({
-    @required Set<Movement> moviments,
+  Set<Movement> _findNextMovements({
+    @required Set<Movement> movements,
     @required Stage stage,
     @required int maxDistance,
     int distance = 2,
   }) {
-    assert(distance >= 2 && moviments?.isNotEmpty == true);
-    if (distance > maxDistance) return moviments;
-    final newMoviments = <Movement>{};
-    moviments.forEach((moviment) {
-      final nextNodes = _possibleNodes(stage: stage, source: moviment.destiny);
-      nextNodes.forEach((node) {
-        if (node != moviment.source) {
-          newMoviments.add(moviment.to(node));
+    assert(distance >= 2 && movements?.isNotEmpty == true);
+    if (distance > maxDistance) return movements;
+    final newMovements = <Movement>{};
+    movements.forEach((movement) {
+      final nextVertices =
+          _possibleVertices(stage: stage, source: movement.destiny);
+      nextVertices.forEach((vertex) {
+        if (vertex != movement.source) {
+          newMovements.add(movement.to(vertex));
         }
       });
     });
-    return _findNextMoviments(
-        moviments: moviments..addAll(newMoviments),
+    return _findNextMovements(
+        movements: movements..addAll(newMovements),
         stage: stage,
         maxDistance: maxDistance,
         distance: distance + 1);
   }
 
-  List<Node> _possibleNodes({Stage stage, Node source}) {
-    final nodesWithEnemies = stage.enemies
-        .map((enemy) => stage.map.nodeAt(x: enemy.xPos, y: enemy.yPos))
+  List<Vertex> _possibleVertices({Stage stage, Vertex source}) {
+    final verticesWithEnemies = stage.enemies
+        .map((enemy) => stage.map.vertexAt(x: enemy.xPos, y: enemy.yPos))
         .toSet();
-    return source.neighboors
-        .where((node) =>
-            node.tile.canPass &&
-            source != node &&
-            !nodesWithEnemies.any((nodeWithEnemy) => nodeWithEnemy == node))
+    return source.knownNeighboors
+        .where((vertex) =>
+            vertex.tile.canPass &&
+            source != vertex &&
+            !verticesWithEnemies
+                .any((vertexWithEnemy) => vertexWithEnemy == vertex))
         .toList();
   }
 }
