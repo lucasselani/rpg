@@ -40,7 +40,7 @@ class MapWidget extends StatelessWidget {
             BoxDecoration(border: Border.all(color: Colors.black87, width: 1)),
         child: Center(
           child: TileWidget(
-            tile: map.getTile(x: xIndex, y: yIndex),
+            tile: map.nodeAt(x: xIndex, y: yIndex).tile,
           ),
         ),
       );

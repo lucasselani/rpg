@@ -12,6 +12,7 @@ dependencies:
 
   cupertino_icons: ^1.0.0
   get: ^3.22.2
+  quiver: ^2.1.5
 
 dev_dependencies:
   flutter_test:
