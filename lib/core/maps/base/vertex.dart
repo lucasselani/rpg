@@ -11,7 +11,8 @@ class Vertex {
   final Set<Vertex> _neighboors = {};
   List<Vertex> get knownNeighboors => List.unmodifiable(_neighboors);
 
-  Vertex({@required this.tile, @required this.xPos, @required this.yPos})
+  Vertex(
+      {this.tile = const AnyTile(), @required this.xPos, @required this.yPos})
       : assert(tile != null),
         assert(xPos != null && xPos >= 0),
         assert(yPos != null && yPos >= 0);

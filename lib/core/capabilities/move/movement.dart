@@ -3,47 +3,52 @@ import 'package:quiver/core.dart';
 import 'package:rpg/core/maps/base/vertex.dart';
 
 class Movement {
-  final Vertex source;
-  final Vertex destiny;
+  final Vertex origin;
+  final Vertex destination;
   final List<Vertex> path;
 
-  Movement.unit({@required this.source, @required this.destiny})
-      : assert(source != null),
-        assert(destiny != null),
-        assert(source.tile.canPass),
-        assert(destiny.tile.canPass),
-        assert(source.isAdjacent(destiny)),
+  Movement.unit({@required this.origin, @required this.destination})
+      : assert(origin != null),
+        assert(destination != null),
+        assert(origin.tile.canPass),
+        assert(destination.tile.canPass),
+        assert(origin.isAdjacent(destination)),
         path = [] {
-    path.addAll([source, destiny]);
+    path.addAll([origin, destination]);
   }
 
   Movement._copy(
-      {@required Vertex newDestiny, Vertex source, List<Vertex> oldPath})
-      : source = source,
-        destiny = newDestiny,
+      {@required Vertex newDestiny, Vertex origin, List<Vertex> oldPath})
+      : origin = origin,
+        destination = newDestiny,
         path = [...oldPath, newDestiny];
 
   Movement to(Vertex adjacentVertex) {
     assert(adjacentVertex != null);
     assert(adjacentVertex.tile.canPass);
-    assert(destiny.isAdjacent(adjacentVertex));
+    assert(destination.isAdjacent(adjacentVertex));
     assert(!path.contains(adjacentVertex));
     return Movement._copy(
       newDestiny: adjacentVertex,
-      source: source,
+      origin: origin,
       oldPath: path,
     );
   }
 
   int get distance => path.length - 1;
 
+  bool containsInPath({int x = 0, int y = 0}) =>
+      path.contains(Vertex(xPos: x, yPos: y));
+
   @override
   String toString() => path.map((vertex) => vertex.toString()).join(' -> ');
 
   @override
-  int get hashCode => hash2(source.hashCode, destiny.hashCode);
+  int get hashCode => hash2(origin.hashCode, destination.hashCode);
 
   @override
   bool operator ==(other) =>
-      other is Movement && other.source == source && other.destiny == destiny;
+      other is Movement &&
+      other.origin == origin &&
+      other.destination == destination;
 }

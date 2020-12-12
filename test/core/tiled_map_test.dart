@@ -5,10 +5,10 @@ import 'package:rpg/core/tiles/can_pass/grass.dart';
 import 'package:rpg/core/tiles/impassable/wall.dart';
 import 'package:collection/collection.dart';
 
-class _MockMap extends TiledMap {
+class MockMap extends TiledMap {
   final int x;
   final int y;
-  _MockMap(List<List<Tile>> tiles, {this.x = 2, this.y = 2}) : super(tiles);
+  MockMap(List<List<Tile>> tiles, {this.x = 2, this.y = 2}) : super(tiles);
 
   @override
   int get xSize => x;
@@ -19,16 +19,17 @@ class _MockMap extends TiledMap {
 
 void main() {
   test('should create 2x2 graph from list<list<tile>>', () {
-    final map = _MockMap([
+    final map = MockMap([
       [Grass(), Grass()],
       [Wall(), Wall()]
     ]);
-    expect(map.xSize == 2, true);
-    expect(map.ySize == 2, true);
+    expect(map.xSize, 2);
+    expect(map.ySize, 2);
+    expect(map.area, 4);
   });
 
   test('should get right tile and position', () {
-    final map = _MockMap([
+    final map = MockMap([
       [Grass(), Grass()],
       [Grass(), Wall()]
     ]);
@@ -40,7 +41,7 @@ void main() {
   });
 
   test('should designate neighboor correctly', () {
-    final map = _MockMap([
+    final map = MockMap([
       [Grass(), Grass(), Grass()],
       [Grass(), Grass(), Grass()],
       [Grass(), Grass(), Grass()],
@@ -121,11 +122,11 @@ void main() {
   });
 
   test('should throw exception when map is null', () {
-    expect(() => _MockMap(null), throwsAssertionError);
+    expect(() => MockMap(null), throwsAssertionError);
   });
 
   test('should throw exception when map has different size than given x', () {
-    final mapCreator = () => _MockMap([
+    final mapCreator = () => MockMap([
           [Grass()],
           [Wall()]
         ]);
@@ -133,7 +134,7 @@ void main() {
   });
 
   test('should throw exception when map has different size than given y', () {
-    final mapCreator = () => _MockMap([
+    final mapCreator = () => MockMap([
           [Grass(), Wall()]
         ]);
     expect(mapCreator, throwsAssertionError);
