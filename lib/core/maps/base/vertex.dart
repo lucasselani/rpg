@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:quiver/core.dart';
 import 'package:rpg/core/tiles/base/tile.dart';
@@ -14,11 +16,12 @@ class Vertex {
         assert(xPos != null && xPos >= 0),
         assert(yPos != null && yPos >= 0);
 
-  bool isAdjacent(Vertex other) {
-    var diff = (other.xPos - xPos).abs();
-    diff += (other.yPos - yPos).abs();
-    return diff == 1;
-  }
+  bool isAdjacent(Vertex other) => distanceBetween(other) == 1 && this != other;
+
+  int distanceBetween(Vertex other) => max(
+        (other.xPos - xPos).abs(),
+        (other.yPos - yPos).abs(),
+      );
 
   void addNeighboor(Vertex neighboor) {
     assert(isAdjacent(neighboor));

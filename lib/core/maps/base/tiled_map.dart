@@ -36,29 +36,19 @@ abstract class TiledMap {
         _vertices.add(Vertex(tile: tiles[y][x], xPos: x, yPos: y));
       }
     }
-    onEachVertex((vertex) => _findNeighboors(vertex));
+    _findNeighboors();
   }
 
-  void _findNeighboors(Vertex current) {
-    // Left neighboor
-    if (current.xPos - 1 >= 0) {
-      final neighboor = vertexAt(x: current.xPos - 1, y: current.yPos);
-      current.addNeighboor(neighboor);
-    }
-    // Right neighboor
-    if (current.xPos + 1 < xSize) {
-      final neighboor = vertexAt(x: current.xPos + 1, y: current.yPos);
-      current.addNeighboor(neighboor);
-    }
-    // Top neighboor
-    if (current.yPos - 1 >= 0) {
-      final neighboor = vertexAt(x: current.xPos, y: current.yPos - 1);
-      current.addNeighboor(neighboor);
-    }
-    // Bottom neighboor
-    if (current.yPos + 1 < ySize) {
-      final neighboor = vertexAt(x: current.xPos, y: current.yPos + 1);
-      current.addNeighboor(neighboor);
-    }
+  void _findNeighboors() {
+    var remainingVertices = [..._vertices];
+    _vertices.forEach((current) {
+      remainingVertices.forEach((probe) {
+        if (current.isAdjacent(probe)) {
+          current.addNeighboor(probe);
+          probe.addNeighboor(current);
+        }
+      });
+      remainingVertices.remove(current);
+    });
   }
 }
