@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:rpg/core/maps/base/tiled_map.dart';
-import 'package:rpg/features/widgets/tile_widget.dart';
+import 'package:rpg/core/scenario/tiled_map.dart';
+import 'package:rpg/features/common/widgets/tile_widget.dart';
 
 class MapWidget extends StatelessWidget {
   final TiledMap map;

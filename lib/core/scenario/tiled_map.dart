@@ -1,13 +1,18 @@
-import 'package:rpg/core/maps/base/vertex.dart';
+import 'package:flutter/foundation.dart';
+import 'package:rpg/core/scenario/vertex.dart';
 import 'package:rpg/core/tiles/base/tile.dart';
 
-abstract class TiledMap {
+class TiledMap {
   List<Vertex> _vertices;
+  int xSize;
+  int ySize;
 
-  int get xSize;
-  int get ySize;
-
-  TiledMap(List<List<Tile>> tiles) {
+  TiledMap(
+      {@required List<List<Tile>> tiles,
+      @required this.xSize,
+      @required this.ySize})
+      : assert(xSize != null && xSize >= 0),
+        assert(ySize != null && ySize >= 0) {
     _assertTiles(tiles);
     _createMap(tiles);
   }

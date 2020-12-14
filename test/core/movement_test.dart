@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rpg/core/capabilities/move/movement.dart';
-import 'package:rpg/core/maps/base/vertex.dart';
+import 'package:rpg/core/scenario/vertex.dart';
 import 'package:rpg/core/tiles/can_pass/grass.dart';
 import 'package:rpg/core/tiles/impassable/wall.dart';
 

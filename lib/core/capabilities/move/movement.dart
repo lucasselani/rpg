@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:quiver/core.dart';
-import 'package:rpg/core/maps/base/vertex.dart';
+import 'package:rpg/core/scenario/vertex.dart';
 
 class Movement {
   final Vertex origin;

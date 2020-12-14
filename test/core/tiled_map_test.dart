@@ -1,38 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rpg/core/maps/base/tiled_map.dart';
-import 'package:rpg/core/tiles/base/tile.dart';
+import 'package:rpg/core/scenario/tiled_map.dart';
 import 'package:rpg/core/tiles/can_pass/grass.dart';
 import 'package:rpg/core/tiles/impassable/wall.dart';
 import 'package:collection/collection.dart';
 
-class MockMap extends TiledMap {
-  final int x;
-  final int y;
-  MockMap(List<List<Tile>> tiles, {this.x = 2, this.y = 2}) : super(tiles);
-
-  @override
-  int get xSize => x;
-
-  @override
-  int get ySize => y;
-}
-
 void main() {
   test('should create 2x2 graph from list<list<tile>>', () {
-    final map = MockMap([
+    final map = TiledMap(tiles: [
       [Grass(), Grass()],
-      [Wall(), Wall()]
-    ]);
+      [Wall(), Wall()],
+    ], xSize: 2, ySize: 2);
     expect(map.xSize, 2);
     expect(map.ySize, 2);
     expect(map.area, 4);
   });
 
   test('should get right tile and position', () {
-    final map = MockMap([
+    final map = TiledMap(tiles: [
       [Grass(), Grass()],
       [Grass(), Wall()]
-    ]);
+    ], xSize: 2, ySize: 2);
     final vertex = map.vertexAt(x: 1, y: 1);
     expect(vertex.xPos == 1, true);
     expect(vertex.yPos == 1, true);
@@ -41,11 +28,11 @@ void main() {
   });
 
   test('should designate neighboor correctly', () {
-    final map = MockMap([
+    final map = TiledMap(tiles: [
       [Grass(), Grass(), Grass()],
       [Grass(), Grass(), Grass()],
       [Grass(), Grass(), Grass()],
-    ], x: 3, y: 3);
+    ], xSize: 3, ySize: 3);
     final vertex00 = map.vertexAt(x: 0, y: 0);
     final vertex10 = map.vertexAt(x: 1, y: 0);
     final vertex20 = map.vertexAt(x: 2, y: 0);
@@ -122,21 +109,22 @@ void main() {
   });
 
   test('should throw exception when map is null', () {
-    expect(() => MockMap(null), throwsAssertionError);
+    expect(() => TiledMap(tiles: null, xSize: null, ySize: null),
+        throwsAssertionError);
   });
 
   test('should throw exception when map has different size than given x', () {
-    final mapCreator = () => MockMap([
+    final mapCreator = () => TiledMap(tiles: [
           [Grass()],
           [Wall()]
-        ]);
+        ], xSize: 2, ySize: 2);
     expect(mapCreator, throwsAssertionError);
   });
 
   test('should throw exception when map has different size than given y', () {
-    final mapCreator = () => MockMap([
+    final mapCreator = () => TiledMap(tiles: [
           [Grass(), Wall()]
-        ]);
+        ], xSize: 2, ySize: 2);
     expect(mapCreator, throwsAssertionError);
   });
 }

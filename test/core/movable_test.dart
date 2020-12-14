@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rpg/core/capabilities/move/movement.dart';
 import 'package:rpg/core/characters/player/player.dart';
-import 'package:rpg/core/maps/base/vertex.dart';
-import 'package:rpg/core/stages/base/stage.dart';
+import 'package:rpg/core/scenario/tiled_map.dart';
+import 'package:rpg/core/scenario/vertex.dart';
+import 'package:rpg/core/scenario/stage.dart';
 import 'package:rpg/core/tiles/can_pass/grass.dart';
 import 'package:rpg/core/tiles/impassable/wall.dart';
 
 import 'stage_test.dart';
-import 'tiled_map_test.dart';
 
 void main() {
   final map = [
@@ -31,7 +31,8 @@ void main() {
 
   setUp(() {
     player = Player();
-    stage = MockStage(player: player, map: MockMap(map, x: 3, y: 3));
+    stage = MockStage(
+        player: player, map: TiledMap(tiles: map, xSize: 3, ySize: 3));
   });
 
   test('should create movable with initial values', () {

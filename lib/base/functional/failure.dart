@@ -1,17 +1,16 @@
-import 'package:flutter/foundation.dart';
-
 abstract class Failure {
   String get message;
   Exception get exception;
 }
 
 class GenericFailure extends Failure {
-  @override
-  final String message;
+  final String _message;
 
   @override
   final Exception exception;
 
-  GenericFailure({@required this.message, this.exception})
-      : assert(message?.isNotEmpty == true);
+  @override
+  String get message => _message ?? exception?.toString();
+
+  GenericFailure({String message, this.exception}) : _message = message;
 }

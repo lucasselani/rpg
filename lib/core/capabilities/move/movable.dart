@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:rpg/core/capabilities/move/movement.dart';
-import 'package:rpg/core/stages/base/stage.dart';
-import 'package:rpg/core/maps/base/vertex.dart';
+import 'package:rpg/core/scenario/stage.dart';
+import 'package:rpg/core/scenario/vertex.dart';
 
 class Movable {
   int xPos = 0;
