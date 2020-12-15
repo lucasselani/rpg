@@ -1,10 +1,25 @@
-import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rpg/base/view/view_state.dart';
 
-abstract class ViewModel extends GetxController {
-  final Rx<ViewState> _state = Rx(IdleState());
-  ViewState get state => _state.value;
-  set state(ViewState value) => _state.value = value;
+class ViewModel with ChangeNotifier {
+  ViewState _state = IdleState();
+  ViewState get state => _state;
+  set state(ViewState value) {
+    _state = value;
+    notifyListeners();
+  }
 
-  static T find<T extends ViewModel>() => Get.find();
+  bool _mounted = true;
+  bool get mounted => _mounted;
+
+  @override
+  void dispose() {
+    _mounted = false;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (mounted) super.notifyListeners();
+  }
 }

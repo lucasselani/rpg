@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:rpg/base/functional/failure.dart';
 import 'package:rpg/base/view/view.dart';
 import 'package:rpg/base/view/view_model.dart';
@@ -12,17 +11,17 @@ import '../utils/widget_test_utils.dart';
 class _MockViewModel extends ViewModel {}
 
 class _MockView extends View<_MockViewModel> {
-  _MockView() : super(_MockViewModel());
+  _MockView() : super(viewModel: _MockViewModel());
 
   @override
   Widget build(BuildContext context) => Scaffold(
           body: Column(
         children: [
-          Obx(() => viewModel.state.isBusy
+          viewModel.state.isBusy
               ? Text('busy')
               : viewModel.state.isError
                   ? Text('error')
-                  : Text('idle')),
+                  : Text('idle'),
           FlatButton(
             key: ValueKey('busy_button'),
             onPressed: () => viewModel.state = BusyState(),
@@ -48,8 +47,6 @@ void main() {
       'should register view model on create and show view with idle state',
       (WidgetTester tester) async {
     await WidgetTestUtils.createWidget(tester, _MockView());
-    expect(ViewModel.find<_MockViewModel>() != null, true);
-    expect(Get.isRegistered<_MockViewModel>(), true);
     expect(WidgetTestUtils.findByText('idle'), findsOneWidget);
   });
 

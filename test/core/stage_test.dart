@@ -8,7 +8,12 @@ import 'package:rpg/core/tiles/impassable/wall.dart';
 
 class MockStage extends Stage {
   MockStage({TiledMap map, Player player, List<Character> enemies})
-      : super(map: map, player: player, enemies: enemies);
+      : super(
+            map: map,
+            player: player,
+            enemies: enemies,
+            maxColumnShown: 2,
+            maxRowShown: 2);
 }
 
 void main() {

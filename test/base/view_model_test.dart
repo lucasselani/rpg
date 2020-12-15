@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:rpg/base/view/view_model.dart';
 import 'package:rpg/base/view/view_state.dart';
 
@@ -36,11 +35,5 @@ void main() {
     viewModel.state = IdleState();
     expect(viewModel.state.isBusy, false);
     expect(viewModel.state.isIdle, true);
-  });
-
-  test('should find view model in Get DI', () {
-    final viewModel = _MockViewModel();
-    Get.put(viewModel);
-    expect(ViewModel.find<_MockViewModel>() != null, true);
   });
 }
